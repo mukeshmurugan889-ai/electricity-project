@@ -1,39 +1,47 @@
+from flask import Flask, render_template, request
 from twilio.rest import Client
 
-# 🔐 Your Twilio Credentials
+app = Flask(__name__)
+
+# 🔐 Twilio Credentials
 account_sid = "ACad2552895e7325a242efa246baa3df81"
 auth_token = "684a0b1ef594b0f0c61f21967667ec6b"
 
-# 📱 Numbers
-twilio_number = "+16626232353"      # Your Twilio number
-your_number = "+918939097840"     # Your number
+twilio_number = "+16626232353"
+your_number = "+918939097840"
 
 client = Client(account_sid, auth_token)
 
-# ⚡ Sensor Values (Example)
-input_current = float(input("Enter Input Current: "))
-output_current = float(input("Enter Output Current: "))
-temperature = float(input("Enter Temperature: "))
+@app.route('/')
+def home():
+    return render_template("index.html")
 
-# 🚨 Conditions
-alert_message = ""
+@app.route('/check', methods=['POST'])
+def check():
+    input_current = float(request.form['input_current'])
+    output_current = float(request.form['output_current'])
+    temperature = float(request.form['temperature'])
 
-if input_current > output_current:
-    alert_message += "⚠️ Theft Detected!\n"
+    alert_message = ""
 
-if input_current > 10:
-    alert_message += "⚠️ Overload Detected!\n"
+    if input_current > output_current:
+        alert_message += "⚠️ Theft Detected!\n"
 
-if temperature > 50:
-    alert_message += "⚠️ High Temperature!\n"
+    if input_current > 10:
+        alert_message += "⚠️ Overload Detected!\n"
 
-# 📤 Send SMS if any issue
-if alert_message != "":
-    message = client.messages.create(
-        body=alert_message,
-        from_=twilio_number,
-        to=your_number
-    )
-    print("SMS Sent! SID:", message.sid)
-else:
-    print("✅ System Normal")
+    if temperature > 50:
+        alert_message += "⚠️ High Temperature!\n"
+
+    if alert_message != "":
+        message = client.messages.create(
+            body=alert_message,
+            from_=twilio_number,
+            to=your_number
+        )
+        return f"SMS Sent! SID: {message.sid}"
+
+    return "✅ System Normal"
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
