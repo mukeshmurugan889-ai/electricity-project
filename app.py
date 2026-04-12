@@ -2,7 +2,7 @@ from twilio.rest import Client
 
 # 🔐 Your Twilio Credentials
 account_sid = "ACad2552895e7325a242efa246baa3df81"
-auth_token = "30648a924e872a528782a1a00512b7cb"
+auth_token = "684a0b1ef594b0f0c61f21967667ec6b"
 
 # 📱 Numbers
 twilio_number = "+16626232353"      # Your Twilio number
