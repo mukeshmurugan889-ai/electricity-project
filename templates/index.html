@@ -2,35 +2,22 @@
 <html>
 <head>
 <title>Current Eye Pro</title>
-
 <style>
 body {
-  margin: 0;
-  font-family: Arial;
   background: linear-gradient(135deg, #0f172a, #1e3a8a);
   color: white;
-}
-
-/* LOGIN */
-#loginPage {
-  display: flex;
-  height: 100vh;
-  justify-content: center;
-  align-items: center;
-}
-
-.login-box {
-  background: #020617;
-  padding: 30px;
-  border-radius: 15px;
-  width: 300px;
   text-align: center;
+  font-family: Arial;
+}
+
+.container {
+  margin-top: 80px;
 }
 
 input {
-  width: 90%;
   padding: 10px;
   margin: 10px;
+  width: 220px;
   border-radius: 8px;
   border: none;
 }
@@ -43,131 +30,34 @@ button {
   cursor: pointer;
 }
 
-/* DASHBOARD */
-#dashboard { display: none; }
-
-header {
+.box {
   background: #020617;
-  padding: 20px;
-  text-align: center;
-  font-size: 26px;
-  color: #38bdf8;
-}
-
-.container { padding: 20px; }
-
-.card {
-  background: #1e293b;
-  padding: 20px;
-  margin: 10px;
+  padding: 30px;
   border-radius: 15px;
   display: inline-block;
-  width: 200px;
-  text-align: center;
 }
-
-.value { font-size: 22px; font-weight: bold; }
-
-.green { color: #22c55e; }
-.red { color: #ef4444; }
-.orange { color: #f97316; }
-
-.section { margin-top: 30px; }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div id="loginPage">
-  <div class="login-box">
-    <h2>🔐 Login</h2>
-    <input type="text" id="mobile" placeholder="Mobile Number">
-    <input type="password" id="password" placeholder="Password">
-    <button onclick="login()">Login</button>
-    <p id="loginMsg"></p>
-  </div>
-</div>
-
-<!-- DASHBOARD -->
-<div id="dashboard">
-
-<header>⚡ Current Eye - Smart Monitoring</header>
+<h1>⚡ Current Eye Pro</h1>
 
 <div class="container">
+  <div class="box">
 
-<h2>📊 Live Dashboard</h2>
+    <form action="/check" method="post">
 
-<div class="card"><h3>Input Current</h3><div class="value" id="inputCurrent">--</div></div>
+      <input name="input_current" placeholder="Input Current" required><br>
+      <input name="output_current" placeholder="Output Current" required><br>
+      <input name="temperature" placeholder="Temperature" required><br>
 
-<div class="card"><h3>Output Current</h3><div class="value" id="outputCurrent">--</div></div>
+      <button type="submit">Check System</button>
 
-<div class="card"><h3>Temperature</h3><div class="value" id="temp">--</div></div>
+    </form>
 
-<div class="card"><h3>Status</h3><div class="value" id="status">Waiting...</div></div>
-
-<br>
-<button onclick="simulate()">🔄 Simulate</button>
-
-<div class="section">
-<h2>🚨 Alert Message</h2>
-<p id="alertMsg">No Alerts</p>
+  </div>
 </div>
-
-</div>
-</div>
-
-<script>
-
-// LOGIN
-function login() {
-  let m = document.getElementById("mobile").value;
-  let p = document.getElementById("password").value;
-
-  if (m === "1234567890" && p === "admin") {
-    document.getElementById("loginPage").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
-  } else {
-    document.getElementById("loginMsg").innerText = "Invalid Login!";
-  }
-}
-
-// SIMULATION
-function simulate() {
-
-  let inputCurrent = Math.floor(Math.random() * 60);
-  let outputCurrent = Math.floor(Math.random() * 40);
-  let temp = Math.floor(Math.random() * 80);
-
-  document.getElementById("inputCurrent").innerText = inputCurrent + " A";
-  document.getElementById("outputCurrent").innerText = outputCurrent + " A";
-  document.getElementById("temp").innerText = temp + " °C";
-
-  let status = document.getElementById("status");
-
-  if (inputCurrent > outputCurrent) {
-    status.innerText = "⚠️ Theft Detected";
-    status.className = "value red";
-    document.getElementById("alertMsg").innerText = "⚠️ Theft Detected!";
-  }
-  else if (inputCurrent > 50) {
-    status.innerText = "⚡ Overload";
-    status.className = "value orange";
-    document.getElementById("alertMsg").innerText = "⚡ Overload!";
-  }
-  else if (temp > 60) {
-    status.innerText = "🔥 High Temp";
-    status.className = "value orange";
-    document.getElementById("alertMsg").innerText = "🔥 High Temperature!";
-  }
-  else {
-    status.innerText = "Normal";
-    status.className = "value green";
-    document.getElementById("alertMsg").innerText = "No Alerts";
-  }
-}
-
-</script>
 
 </body>
 </html>
