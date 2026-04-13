@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 # 🔐 Twilio Credentials
 account_sid = "ACad2552895e7325a242efa246baa3df81"
-auth_token = "684a0b1ef594b0f0c61f21967667ec6b"
+auth_token = "22aa5d84b6496abf7889e044ecaeecef"
 
 twilio_number = "+16626232353"
 your_number = "+918939097840"
