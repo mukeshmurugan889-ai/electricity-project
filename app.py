@@ -64,9 +64,16 @@ def send_data():
 # =========================
 @app.route('/get-data', methods=['GET'])
 def get_data():
+    global latest_data
+
+    if not latest_data:
+        return jsonify({
+            "input_current": 0,
+            "output_current": 0,
+            "temperature": 0
+        })
+
     return jsonify(latest_data)
-
-
 # =========================
 # 🖥️ MANUAL WEBSITE INPUT (your old system)
 # =========================
@@ -78,7 +85,7 @@ def check():
     output_current = float(request.form['output_current'])
     temperature = float(request.form['temperature'])
 
-    # 🔥 STORE DATA (THIS WAS MISSING)
+    # 🔥 STORE DATA FOR ESP32
     latest_data = {
         "input_current": input_current,
         "output_current": output_current,
