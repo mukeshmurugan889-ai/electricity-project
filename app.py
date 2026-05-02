@@ -49,11 +49,16 @@ def send_data():
         alert_message += "⚠️ High Temperature!\n"
 
     if alert_message != "":
-        message = client.messages.create(
-            body=alert_message,
-            from_=twilio_number,
-            to=your_number
-        )
+        
+    message = client.messages.create(
+        body=alert_message,
+        from_=twilio_number,
+        to=your_number
+    )
+    print("SMS Sent:", message.sid)
+except Exception as e:
+    print("Twilio Error:", e)
+        
         print("SMS Sent:", message.sid)
 
     return jsonify({"status": "received"})
@@ -104,11 +109,16 @@ def check():
         alert_message += "⚠️ High Temperature!\n"
 
     if alert_message != "":
-        message = client.messages.create(
-            body=alert_message,
-            from_=twilio_number,
-            to=your_number
-        )
+        
+    message = client.messages.create(
+        body=alert_message,
+        from_=twilio_number,
+        to=your_number
+    )
+    print("SMS Sent:", message.sid)
+except Exception as e:
+    print("Twilio Error:", e)
+        
         return f"SMS Sent! SID: {message.sid}"
 
     return "✅ System Normal"
