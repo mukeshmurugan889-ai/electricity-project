@@ -3,7 +3,7 @@ from twilio.rest import Client
 
 app = Flask(__name__)
 
-# 🔐 Twilio Credentials (PUT NEW TOKEN)
+# 🔐 Twilio Credentials
 account_sid = "ACad2552895e7325a242efa246baa3df81"
 auth_token = "32c3ae54a3d42d10a087c4c46b435919"
 
@@ -19,6 +19,9 @@ latest_data = {
     "temperature": 0
 }
 
+# 🚫 Prevent repeated SMS
+last_alert = ""
+
 # =========================
 # 🌐 HOME PAGE
 # =========================
@@ -32,7 +35,7 @@ def home():
 # =========================
 @app.route('/send-data', methods=['POST'])
 def send_data():
-    global latest_data
+    global latest_data, last_alert
 
     data = request.json or {}
 
@@ -57,7 +60,9 @@ def send_data():
     if temperature > 50:
         alert_message += "⚠️ High Temperature!\n"
 
-    if alert_message != "":
+    # ✅ Anti-spam logic
+    if alert_message != "" and alert_message != last_alert:
+        last_alert = alert_message
         try:
             message = client.messages.create(
                 body=alert_message,
@@ -84,7 +89,7 @@ def get_data():
 # =========================
 @app.route('/check', methods=['POST'])
 def check():
-    global latest_data
+    global latest_data, last_alert
 
     input_current = float(request.form['input_current'])
     output_current = float(request.form['output_current'])
@@ -107,7 +112,9 @@ def check():
     if temperature > 50:
         alert_message += "⚠️ High Temperature!\n"
 
-    if alert_message != "":
+    # ✅ Anti-spam logic
+    if alert_message != "" and alert_message != last_alert:
+        last_alert = alert_message
         try:
             message = client.messages.create(
                 body=alert_message,
@@ -117,7 +124,7 @@ def check():
             print("SMS Sent:", message.sid)
             return "SMS Sent!"
         except Exception as e:
-            return str(e)   # 🔥 THIS LINE SHOWS REAL ERROR
+            return str(e)
 
     return "✅ System Normal"
 
