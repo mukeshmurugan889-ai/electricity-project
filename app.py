@@ -72,9 +72,18 @@ def get_data():
 # =========================
 @app.route('/check', methods=['POST'])
 def check():
+    global latest_data
+
     input_current = float(request.form['input_current'])
     output_current = float(request.form['output_current'])
     temperature = float(request.form['temperature'])
+
+    # 🔥 STORE DATA (THIS WAS MISSING)
+    latest_data = {
+        "input_current": input_current,
+        "output_current": output_current,
+        "temperature": temperature
+    }
 
     alert_message = ""
 
@@ -96,7 +105,6 @@ def check():
         return f"SMS Sent! SID: {message.sid}"
 
     return "✅ System Normal"
-
 
 # =========================
 # RUN SERVER
