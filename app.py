@@ -3,9 +3,9 @@ from twilio.rest import Client
 
 app = Flask(__name__)
 
-# 🔐 Twilio Credentials (REPLACE TOKEN)
+# 🔐 Twilio Credentials (PUT NEW TOKEN)
 account_sid = "ACad2552895e7325a242efa246baa3df81"
-auth_token = "32c3ae54a3d42d10a087c4c46b435919"   # ⚠️ PUT NEW TOKEN HERE
+auth_token = "32c3ae54a3d42d10a087c4c46b435919"
 
 twilio_number = "+16626232353"
 your_number = "+918939097840"
@@ -28,7 +28,7 @@ def home():
 
 
 # =========================
-# 📥 ESP32 SENDS DATA HERE
+# 📥 ESP32 SENDS DATA
 # =========================
 @app.route('/send-data', methods=['POST'])
 def send_data():
@@ -72,7 +72,7 @@ def send_data():
 
 
 # =========================
-# 📤 GET DATA (ESP32 READS)
+# 📤 GET DATA
 # =========================
 @app.route('/get-data', methods=['GET'])
 def get_data():
@@ -80,7 +80,7 @@ def get_data():
 
 
 # =========================
-# 🖥️ MANUAL WEBSITE INPUT
+# 🖥️ WEBSITE INPUT
 # =========================
 @app.route('/check', methods=['POST'])
 def check():
@@ -117,8 +117,7 @@ def check():
             print("SMS Sent:", message.sid)
             return "SMS Sent!"
         except Exception as e:
-            print("Twilio Error:", e)
-            return "SMS Failed"
+            return str(e)   # 🔥 THIS LINE SHOWS REAL ERROR
 
     return "✅ System Normal"
 
