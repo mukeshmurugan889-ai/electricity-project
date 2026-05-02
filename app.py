@@ -49,13 +49,15 @@ def send_data():
         alert_message += "⚠️ High Temperature!\n"
 
     if alert_message != "":
-        
-    message = client.messages.create(
-        body=alert_message,
-        from_=twilio_number,
-        to=your_number
-    )
-    print("SMS Sent:", message.sid)
+    try:
+        message = client.messages.create(
+            body=alert_message,
+            from_=twilio_number,
+            to=your_number
+        )
+        print("SMS Sent:", message.sid)
+    except Exception as e:
+        print("Twilio Error:", e)
 except Exception as e:
     print("Twilio Error:", e)
         
@@ -109,12 +111,17 @@ def check():
         alert_message += "⚠️ High Temperature!\n"
 
     if alert_message != "":
-        
-    message = client.messages.create(
-        body=alert_message,
-        from_=twilio_number,
-        to=your_number
-    )
+    try:
+        message = client.messages.create(
+            body=alert_message,
+            from_=twilio_number,
+            to=your_number
+        )
+        print("SMS Sent:", message.sid)
+        return f"SMS Sent! SID: {message.sid}"
+    except Exception as e:
+        print("Twilio Error:", e)
+        return "SMS Failed"
     print("SMS Sent:", message.sid)
 except Exception as e:
     print("Twilio Error:", e)
